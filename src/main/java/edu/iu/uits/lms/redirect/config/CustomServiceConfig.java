@@ -1,4 +1,4 @@
-package edu.iu.uits.lms.redirect;
+package edu.iu.uits.lms.redirect.config;
 
 /*-
  * #%L
@@ -8,18 +8,18 @@ package edu.iu.uits.lms.redirect;
  * %%
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
- *
+ * 
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * 3. Neither the name of the Indiana University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software without
  *    specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -33,20 +33,25 @@ package edu.iu.uits.lms.redirect;
  * #L%
  */
 
-import edu.iu.uits.lms.common.variablereplacement.EnableVariableReplacementService;
-import edu.iu.uits.lms.lti.config.EnableGlobalErrorHandler;
-import edu.iu.uits.lms.lti.config.EnableLtiClient;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.support.GenericWebApplicationContext;
 
-@SpringBootApplication
-@EnableGlobalErrorHandler
-@EnableLtiClient
-@EnableVariableReplacementService
-public class WebApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(WebApplication.class, args);
-    }
+@ConditionalOnProperty("app.customServicePackage")
+@ComponentScan("${app.customServicePackage}")
+@Configuration
+@Slf4j
+public class CustomServiceConfig {
+
+   @Autowired
+   private GenericWebApplicationContext context = null;
+
+   public CustomServiceConfig() {
+      log.debug("CustomServiceConfig()");
+   }
 
 }

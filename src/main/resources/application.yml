@@ -3,7 +3,7 @@ spring:
     name: redirect
   session:
     store-type: none
-  config.import: optional:${app.fullFilePath}/${app.overridesFileName}, optional:${app.fullFilePath}/security.properties, optional:classpath:git.properties
+  config.import: optional:${app.fullFilePath}/${app.overridesFileName}, optional:${app.fullFilePath}/security.properties, optional:classpath:canvas.properties, optional:classpath:git.properties
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -20,7 +20,7 @@ spring:
           autoRegisterUserTypes: true
   datasource:
     driverClassName: ${lms.db.driverClass}
-    url: ${lms.db.url}
+    jdbcUrl: ${lms.db.url}
     username: ${lms.db.user}
     password: ${lms.db.password}
     type: org.springframework.jdbc.datasource.DriverManagerDataSource
@@ -29,11 +29,6 @@ spring:
 #  output:
 #    ansi:
 #      enabled: ALWAYS
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: ${oauth.tokenprovider.url}/.well-known/jwks.json
 redirect:
   version: @app.version@
   env: ${app.env}

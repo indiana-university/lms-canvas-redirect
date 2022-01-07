@@ -70,10 +70,8 @@ import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@RunWith(SpringRunner.class)
 @WebMvcTest(RedirectLtiController.class)
 @Import({ToolConfig.class, LtiClientTestConfig.class})
-//@ActiveProfiles("none")
 public class LtiLaunchSecurityTest {
 
    @Autowired
@@ -81,9 +79,6 @@ public class LtiLaunchSecurityTest {
 
    @MockBean
    private LtiAuthorizationServiceImpl ltiAuthorizationService;
-
-//   @MockBean
-//   private LtiPropsApi ltiPropsApi;
 
    @MockBean
    private VariableReplacementService variableReplacementService;

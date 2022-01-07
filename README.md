@@ -1,4 +1,4 @@
-# ess-lms-canvas-redirect
+# lms-canvas-redirect
 
 To Debug w/ Intellij, forward 5005 (in kube-forwarder, or k9s) to any desired port and then hook intellij up to that
 
@@ -8,4 +8,17 @@ helm upgrade redirect harbor-prd/k8s-boot -f helm-common.yaml -f helm-dev.yaml -
 
 ```
 helm upgrade redirect harbor-prd/k8s-boot -f helm-common.yaml -f helm-snd.yaml --install
+```
+
+Base version:
+```
+mvn clean install spring-boot:run -Dspring-boot.run.jvmArguments="-Dapp.fullFilePath=file:/opt/j2ee/security/lms_poc/base -Dspring.profiles.active=dev,vault -Dlogging.level.edu.iu.uits.lms=DEBUG"
+
+```
+
+Custom service version:
+```
+mvn clean install -P var-repl-ser -Dvariable-replacement-service.groupId=edu.iu.uits.lms -Dvariable-replacement-service.artifactId=lms-iu-variable-replacement-service -Dvariable-replacement-service.version=5.0.0-SNAPSHOT \
+    spring-boot:run -Dspring-boot.run.jvmArguments="-Dapp.fullFilePath=file:/opt/j2ee/security/lms_poc/base -Dspring.profiles.active=dev,vault -Dlogging.level.edu.iu.uits.lms=DEBUG -Dapp.customServicePackage=edu.iu.uits.lms.variablereplacement"
+
 ```
