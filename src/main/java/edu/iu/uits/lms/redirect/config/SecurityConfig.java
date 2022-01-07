@@ -57,8 +57,8 @@ public class SecurityConfig {
                   .authorizeRequests()
                   .antMatchers("/lti").permitAll();
 
-            //Need to disable csrf so that we can use POST via REST
-            http.csrf().disable();
+            //Need to disable csrf just for the /lti
+            http.csrf().ignoringAntMatchers("/lti");
 
             //Need to disable the frame options so we can embed this in another tool
             http.headers().frameOptions().disable();
