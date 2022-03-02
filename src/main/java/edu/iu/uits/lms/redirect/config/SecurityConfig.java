@@ -33,13 +33,17 @@ package edu.iu.uits.lms.redirect.config;
  * #L%
  */
 
-import edu.iu.uits.lms.lti.security.LtiAuthenticationProvider;
+import edu.iu.uits.lms.lti.service.LmsDefaultGrantedAuthoritiesMapper;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import uk.ac.ox.ctl.lti13.Lti13Configurer;
+
+import static edu.iu.uits.lms.lti.LTIConstants.BASE_USER_ROLE;
+import static edu.iu.uits.lms.lti.LTIConstants.JWKS_CONFIG_URI;
 
 @Configuration
 public class SecurityConfig {
@@ -50,40 +54,34 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authenticationProvider(new LtiAuthenticationProvider());
+
             http
-                  .requestMatchers().antMatchers("/lti")
+                  .requestMatchers()
+                  .antMatchers(JWKS_CONFIG_URI, "/config.json", "/redirect")
                   .and()
                   .authorizeRequests()
-                  .antMatchers("/lti").permitAll();
+                  .antMatchers(JWKS_CONFIG_URI, "/config.json", "/error").permitAll()
+                  .antMatchers("/**").hasRole(BASE_USER_ROLE);
 
-            //Need to disable csrf just for the /lti
-            http.csrf().ignoringAntMatchers("/lti");
+            //Setup the LTI handshake
+            Lti13Configurer lti13Configurer = new Lti13Configurer()
+                  .grantedAuthoritiesMapper(new LmsDefaultGrantedAuthoritiesMapper());
 
-            //Need to disable the frame options so we can embed this in another tool
-            http.headers().frameOptions().disable();
+            http.apply(lti13Configurer);
 
-            http.exceptionHandling().accessDeniedPage("/accessDenied");
+            //Fallback for everything else
+            http.requestMatchers().antMatchers("/**")
+                  .and()
+                  .authorizeRequests()
+                  .anyRequest().authenticated();
+
         }
 
         @Override
         public void configure(WebSecurity web) throws Exception {
             // ignore everything except paths specified
-            web.ignoring().antMatchers("/actuator/**");
+            web.ignoring().antMatchers("/actuator/**", "/jsrivet/**");
         }
 
-    }
-
-    @Configuration
-    @Order(SecurityProperties.BASIC_AUTH_ORDER - 2)
-    public static class CatchAllSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http.requestMatchers().antMatchers("/**")
-                  .and()
-                  .authorizeRequests()
-                  .anyRequest().authenticated();
-        }
     }
 }
