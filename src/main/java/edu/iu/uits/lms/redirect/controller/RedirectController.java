@@ -56,7 +56,8 @@ public class RedirectController extends RedirectableLtiController {
    @RequestMapping
    public String redirect() {
       OidcAuthenticationToken token = getTokenWithoutContext();
-      String redirectUrl = OidcTokenUtils.getCustomValue(token, CUSTOM_REDIRECT_URL_PROP);
+      OidcTokenUtils oidcTokenUtils = new OidcTokenUtils(token);
+      String redirectUrl = oidcTokenUtils.getCustomValue(CUSTOM_REDIRECT_URL_PROP);
       return "redirect:" + performMacroVariableReplacement(redirectUrl);
    }
 
