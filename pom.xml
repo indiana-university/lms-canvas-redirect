@@ -73,7 +73,7 @@
         <jdk.source>11</jdk.source>
         <jdk.target>11</jdk.target>
         <lms-canvas-common-configuration.version>5.0.3</lms-canvas-common-configuration.version>
-        <lms-canvas-lti-framework.version>5.1.7</lms-canvas-lti-framework.version>
+        <lms-canvas-lti-framework.version>5.1.9</lms-canvas-lti-framework.version>
         <lms-canvas-rivet.version>5.1.8.2_1</lms-canvas-rivet.version>
         <spring-cloud-starter-vault-config.version>3.0.5</spring-cloud-starter-vault-config.version>
         <spring-security-bom.version>5.5.2</spring-security-bom.version>

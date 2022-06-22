@@ -19,11 +19,10 @@ spring:
         usertype:
           autoRegisterUserTypes: true
   datasource:
-    driverClassName: ${lms.db.driverClass}
-    jdbcUrl: ${lms.db.url}
+    url: ${lms.db.url}
     username: ${lms.db.user}
     password: ${lms.db.password}
-    type: org.springframework.jdbc.datasource.DriverManagerDataSource
+    type: ${lms.db.poolType}
   cloud.vault.enabled: false
 
 #  output:
