@@ -1,0 +1,30 @@
+{
+  "title": "Redirect",
+  "description": "LTI tool which allows for a redirection to an external URL",
+  "oidc_initiation_url": "http://localhost:8080/lti/login_initiation/lms_lti_redirect",
+  "target_link_uri": "http://localhost:8080/app/launch",
+  "extensions": [
+    {
+      "domain": "localhost",
+      "platform": "canvas.instructure.com",
+      "privacy_level": "public",
+      "settings": {
+        "placements": [
+          {
+            "default": "disabled",
+            "enabled": true,
+            "placement": "course_navigation",
+            "message_type": "LtiResourceLinkRequest"
+          }
+        ]
+      }
+    }
+  ],
+  "public_jwk_url": "http://localhost:8080/.well-known/jwks.json",
+  "custom_fields": {
+    "canvas_course_id": "$Canvas.course.id",
+    "canvas_user_login_id": "$Canvas.user.loginId",
+    "instructure_membership_roles": "$com.Instructure.membership.roles",
+    "redirect_url": "http://google.com/search?q=${CANVAS_COURSE_ID}"
+  }
+}

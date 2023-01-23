@@ -36,11 +36,10 @@ package edu.iu.uits.lms.redirect.controller;
 import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import edu.iu.uits.lms.common.variablereplacement.MacroVariableMapper;
-import edu.iu.uits.lms.common.variablereplacement.VariableReplacementService;
 import edu.iu.uits.lms.lti.LTIConstants;
 import edu.iu.uits.lms.lti.config.LtiClientTestConfig;
+import edu.iu.uits.lms.lti.config.TestUtils;
 import edu.iu.uits.lms.lti.controller.RedirectableLtiController;
-import edu.iu.uits.lms.lti.service.TestUtils;
 import edu.iu.uits.lms.redirect.config.ToolConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,9 +75,6 @@ public class AppLaunchSecurityTest {
 
    @MockBean
    private MessageSource messageSource = null;
-
-   @Autowired
-   private VariableReplacementService variableReplacementService;
 
    @Test
    public void appNoAuthnLaunch() throws Exception {
@@ -126,7 +122,7 @@ public class AppLaunchSecurityTest {
             URLEncoder.encode(MacroVariableMapper.MACRO_CLASS_NBR, StandardCharsets.UTF_8),
             "1234");
 
-      //This is a secured endpoint and should not not allow access without authn
+      //This is a secured endpoint and should not allow access without authn
       mvc.perform(get("/redirect")
                   .header(HttpHeaders.USER_AGENT, TestUtils.defaultUseragent())
                   .contentType(MediaType.APPLICATION_JSON))
@@ -137,7 +133,7 @@ public class AppLaunchSecurityTest {
    @Test
    public void randomUrlNoAuth() throws Exception {
       SecurityContextHolder.getContext().setAuthentication(null);
-      //This is a secured endpoint and should not not allow access without authn
+      //This is a secured endpoint and should not allow access without authn
       mvc.perform(get("/asdf/foobar")
             .header(HttpHeaders.USER_AGENT, TestUtils.defaultUseragent())
             .contentType(MediaType.APPLICATION_JSON))
@@ -149,7 +145,7 @@ public class AppLaunchSecurityTest {
       OidcAuthenticationToken token = TestUtils.buildToken("userId", "foo", TestUtils.defaultRole());
       SecurityContextHolder.getContext().setAuthentication(token);
 
-      //This is a secured endpoint and should not not allow access without authn
+      //This is a secured endpoint and should not allow access without authn
       mvc.perform(get("/asdf/foobar")
             .header(HttpHeaders.USER_AGENT, TestUtils.defaultUseragent())
             .contentType(MediaType.APPLICATION_JSON))

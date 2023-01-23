@@ -50,7 +50,7 @@ import org.springframework.context.annotation.Bean;
 import java.util.Date;
 
 @SpringBootApplication
-@EnableGlobalErrorHandler(rivetPath = "/jsrivet")
+@EnableGlobalErrorHandler
 @EnableLtiClient(toolKeys = {"lms_lti_redirect"})
 @EnableCookieValve
 @EnableVariableReplacementService

@@ -24,10 +24,11 @@ spring:
     password: ${lms.db.password}
     type: ${lms.db.poolType}
   cloud.vault.enabled: false
-
-#  output:
-#    ansi:
-#      enabled: ALWAYS
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${oauth.tokenprovider.url}/.well-known/jwks.json
 redirect:
   version: @app.version@
   env: ${app.env}
@@ -50,13 +51,16 @@ management:
   endpoints.web.exposure.include: health,info
   health.redis.enabled: false
 
+springdoc:
+  api-docs.enabled: false
+  swagger-ui.enabled: false
+
 ---
 
 spring:
   config:
     activate.on-profile: vault
     import: vault://
-  #  cloud.bootstrap.enabled: true
   cloud.vault:
     enabled: true
     config:
