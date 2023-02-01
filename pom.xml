@@ -67,6 +67,8 @@
 
     <properties>
         <app.version>${project.version}</app.version>
+        <denodo-jdbc.version>8.0.2</denodo-jdbc.version>
+        <denodo-hibernate-dialect.version>8.0.20201021</denodo-hibernate-dialect.version>
         <git-commit-id-maven-plugin.version>5.0.0</git-commit-id-maven-plugin.version>
         <hibernate5-ddl-maven-plugin.version>2.3.0</hibernate5-ddl-maven-plugin.version>
         <java.version>17</java.version>
@@ -344,6 +346,30 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>denodo</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.denodo.vdp.jdbc</groupId>
+                    <artifactId>denodo-jdbc</artifactId>
+                    <version>${denodo-jdbc.version}</version>
+                    <scope>runtime</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.denodo.vdp.jdbc</groupId>
+                    <artifactId>denodo-hibernate-dialect</artifactId>
+                    <version>${denodo-hibernate-dialect.version}</version>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+            <repositories>
+                <repository>
+                    <id>IUMaven</id>
+                    <name>IUMaven</name>
+                    <url>https://uisapp2.iu.edu/nxs-prd/content/groups/public</url>
+                </repository>
+            </repositories>
         </profile>
     </profiles>
 </project>

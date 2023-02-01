@@ -3,7 +3,7 @@ spring:
     name: redirect
   session:
     store-type: none
-  config.import: optional:${app.fullFilePath}/${app.overridesFileName}, optional:${app.fullFilePath}/security.properties, optional:classpath:canvas.properties, optional:classpath:git.properties, classpath:lti-registrations.properties
+  config.import: optional:${app.fullFilePath}/${app.overridesFileName}, optional:${app.fullFilePath}/security.properties, optional:classpath:canvas.properties, optional:classpath:git.properties, classpath:lti-registrations.properties, optional:classpath:denodo.properties
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -71,3 +71,15 @@ spring:
       enabled: true
       backend: ua-vpit/enterprise-systems/lms/kv
       application-name: redirect
+
+---
+
+spring:
+  config:
+    activate.on-profile: denodo
+  datasource:
+    denodo:
+      driverClassName: ${denodo.db.driverClass}
+      jdbcUrl: ${denodo.db.url}
+      username: ${denodo.db.user}
+      password: ${denodo.db.password}
