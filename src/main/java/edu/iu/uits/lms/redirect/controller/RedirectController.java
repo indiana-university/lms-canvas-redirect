@@ -39,10 +39,11 @@ import edu.iu.uits.lms.lti.service.OidcTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
 import uk.ac.ox.ctl.lti13.security.oauth2.client.lti.authentication.OidcAuthenticationToken;
 
 @Controller
-@RequestMapping("/redirect")
+@RequestMapping("/app/redirect")
 public class RedirectController extends RedirectableLtiController {
 
    @Autowired
@@ -54,11 +55,15 @@ public class RedirectController extends RedirectableLtiController {
    }
 
    @RequestMapping
-   public String redirect() {
+   public RedirectView redirect() {
       OidcAuthenticationToken token = getTokenWithoutContext();
       OidcTokenUtils oidcTokenUtils = new OidcTokenUtils(token);
       String redirectUrl = oidcTokenUtils.getCustomValue(CUSTOM_REDIRECT_URL_PROP);
-      return "redirect:" + performMacroVariableReplacement(redirectUrl);
+
+      RedirectView rv =  new RedirectView(performMacroVariableReplacement(redirectUrl));
+      //Spring has its own mechanism for variables in redirect urls.  Let's turn it off!
+      rv.setExpandUriTemplateVariables(false);
+      return rv;
    }
 
 }

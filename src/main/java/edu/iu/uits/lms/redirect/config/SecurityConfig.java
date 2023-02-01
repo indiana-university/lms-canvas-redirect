@@ -44,7 +44,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import uk.ac.ox.ctl.lti13.Lti13Configurer;
 
 import static edu.iu.uits.lms.lti.LTIConstants.BASE_USER_ROLE;
-import static edu.iu.uits.lms.lti.LTIConstants.JWKS_CONFIG_URI;
+import static edu.iu.uits.lms.lti.LTIConstants.WELL_KNOWN_ALL;
 
 @Configuration
 public class SecurityConfig {
@@ -61,10 +61,10 @@ public class SecurityConfig {
 
             http
                   .requestMatchers()
-                  .antMatchers(JWKS_CONFIG_URI, "/config.json", "/redirect")
+                  .antMatchers(WELL_KNOWN_ALL, "/error", "/config.json", "/api/**", "/app/**")
                   .and()
                   .authorizeRequests()
-                  .antMatchers(JWKS_CONFIG_URI, "/config.json", "/error").permitAll()
+                  .antMatchers(WELL_KNOWN_ALL, "/config.json", "/error", "/api/**").permitAll()
                   .antMatchers("/**").hasRole(BASE_USER_ROLE);
 
             //Setup the LTI handshake
@@ -84,7 +84,7 @@ public class SecurityConfig {
         @Override
         public void configure(WebSecurity web) throws Exception {
             // ignore everything except paths specified
-            web.ignoring().antMatchers("/actuator/**");
+            web.ignoring().antMatchers("/actuator/**", "/app/css/**", "/app/js/**", "/favicon.ico");
         }
 
     }
