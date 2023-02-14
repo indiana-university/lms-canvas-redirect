@@ -79,7 +79,7 @@ public class AppLaunchSecurityTest {
    @Test
    public void appNoAuthnLaunch() throws Exception {
       //This is a secured endpoint and should not allow access without authn
-      mvc.perform(get("/redirect")
+      mvc.perform(get("/app/redirect")
             .header(HttpHeaders.USER_AGENT, TestUtils.defaultUseragent())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isForbidden());
@@ -123,7 +123,7 @@ public class AppLaunchSecurityTest {
             "1234");
 
       //This is a secured endpoint and should not allow access without authn
-      mvc.perform(get("/redirect")
+      mvc.perform(get("/app/redirect")
                   .header(HttpHeaders.USER_AGENT, TestUtils.defaultUseragent())
                   .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is3xxRedirection())
