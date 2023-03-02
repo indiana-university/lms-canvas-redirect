@@ -47,13 +47,23 @@ app:
   overridesFileName: overrides.properties
 
 management:
-  endpoint.info.enabled: true
-  endpoints.web.exposure.include: health,info
+  endpoint.lms.enabled: true
+  endpoints.web.exposure.include: health,lms
   health.redis.enabled: false
+  info.java.enabled: true
 
 springdoc:
   api-docs.enabled: false
   swagger-ui.enabled: false
+
+---
+
+spring:
+  config.activate.on-profile: redis-session
+  session:
+    store-type: redis
+    redis.namespace: redirect-@app.version@:session
+management.health.redis.enabled: true
 
 ---
 
