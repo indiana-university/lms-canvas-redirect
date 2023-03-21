@@ -58,13 +58,13 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-
+            // TODO - the "/lti/**" paths were added for temporarily supporting the 1.1 launch mechanism
             http
                   .requestMatchers()
-                  .antMatchers(WELL_KNOWN_ALL, "/error", "/config.json", "/api/**", "/app/**")
+                  .antMatchers(WELL_KNOWN_ALL, "/error", "/config.json", "/api/**", "/app/**", "/lti/**")
                   .and()
                   .authorizeRequests()
-                  .antMatchers(WELL_KNOWN_ALL, "/config.json", "/error", "/api/**").permitAll()
+                  .antMatchers(WELL_KNOWN_ALL, "/config.json", "/error", "/api/**", "/lti/**").permitAll()
                   .antMatchers("/**").hasRole(BASE_USER_ROLE);
 
             //Setup the LTI handshake

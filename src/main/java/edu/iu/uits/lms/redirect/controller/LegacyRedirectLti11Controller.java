@@ -34,7 +34,7 @@ package edu.iu.uits.lms.redirect.controller;
  */
 
 import edu.iu.uits.lms.common.variablereplacement.VariableReplacementService;
-import edu.iu.uits.lms.lti.controller.legacy.RedirectableLtiController;
+import edu.iu.uits.lms.lti.controller.legacy.RedirectableLti11Controller;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,10 +48,12 @@ import java.util.Map;
 
 /**
  * Created by chmaurer on 11/20/14.
+ * @deprecated This class was temporarily added and is not intended for long-term use.  Please use the 1.3 launch mechanism instead.
  */
 @Controller
 @RequestMapping("/lti")
-public class LegacyRedirectLtiController extends RedirectableLtiController {
+@Deprecated(since = "5.2.2", forRemoval = true)
+public class LegacyRedirectLti11Controller extends RedirectableLti11Controller {
 
     private boolean openLaunchUrlInNewWindow = false;
 
