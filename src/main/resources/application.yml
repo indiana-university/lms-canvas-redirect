@@ -62,7 +62,7 @@ spring:
   config.activate.on-profile: redis-session
   session:
     store-type: redis
-    redis.namespace: redirect-@app.version@:session
+    redis.namespace: redirect-${app.version}:session
 management.health.redis.enabled: true
 
 ---

@@ -9,7 +9,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.8</version>
+        <version>2.7.11</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
@@ -70,25 +70,25 @@
         <denodo-jdbc.version>8.0.2</denodo-jdbc.version>
         <denodo-hibernate-dialect.version>8.0.20201021</denodo-hibernate-dialect.version>
         <git-commit-id-maven-plugin.version>5.0.0</git-commit-id-maven-plugin.version>
-        <hibernate5-ddl-maven-plugin.version>2.3.0</hibernate5-ddl-maven-plugin.version>
+        <hibernate5-ddl-maven-plugin.version>2.5.0</hibernate5-ddl-maven-plugin.version>
         <java.version>17</java.version>
         <jdk.source>17</jdk.source>
         <jdk.target>17</jdk.target>
-        <lms-embedded-services.version>5.2.2</lms-embedded-services.version>
-        <lms-team-spring-boot-it12>4.7</lms-team-spring-boot-it12>
-        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <lms-embedded-services.version>5.2.7</lms-embedded-services.version>
+        <lms-team-spring-boot-it12>4.8</lms-team-spring-boot-it12>
+        <spring-cloud.version>2021.0.7</spring-cloud.version>
 
         <!-- These 3 props can be overridden at compile time if they are being customized-->
         <variable-replacement-service.groupId>edu.iu.uits.lms</variable-replacement-service.groupId>
         <variable-replacement-service.artifactId>lms-iu-variable-replacement-service</variable-replacement-service.artifactId>
         <variable-replacement-service.version>${lms-embedded-services.version}</variable-replacement-service.version>
 
-        <plugins.compiler.version>3.8.1</plugins.compiler.version>
+        <plugins.compiler.version>3.11.0</plugins.compiler.version>
         <plugins.gpg.version>1.6</plugins.gpg.version>
         <plugins.javadoc.version>3.0.1</plugins.javadoc.version>
         <plugins.license.version>2.0.0</plugins.license.version>
         <plugins.nexus-staging.version>1.6.13</plugins.nexus-staging.version>
-        <plugins.release.version>2.5.3</plugins.release.version>
+        <plugins.release.version>3.0.0</plugins.release.version>
         <plugins.source.version>3.0.1</plugins.source.version>
     </properties>
 

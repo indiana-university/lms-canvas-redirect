@@ -64,7 +64,6 @@ public class WebApplication {
     private ToolConfig toolConfig;
 
     public static void main(String[] args) {
-//        SpringApplication.run(WebApplication.class, args);
         SpringApplication app = new SpringApplication(WebApplication.class);
         BufferingApplicationStartup startup = new BufferingApplicationStartup(2048);
         startup.addFilter(startupStep -> startupStep.getName().matches("spring.boot.application.ready"));
