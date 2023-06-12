@@ -33,6 +33,7 @@ package edu.iu.uits.lms.redirect.config;
  * #L%
  */
 
+import edu.iu.uits.lms.common.it12logging.LmsFilterSecurityInterceptorObjectPostProcessor;
 import edu.iu.uits.lms.lti.service.LmsDefaultGrantedAuthoritiesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -41,6 +42,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import uk.ac.ox.ctl.lti13.Lti13Configurer;
 
 import static edu.iu.uits.lms.lti.LTIConstants.BASE_USER_ROLE;
@@ -65,7 +67,14 @@ public class SecurityConfig {
                   .and()
                   .authorizeRequests()
                   .antMatchers(WELL_KNOWN_ALL, "/config.json", "/error", "/api/**", "/lti/**").permitAll()
-                  .antMatchers("/**").hasRole(BASE_USER_ROLE);
+                  .antMatchers("/**").hasRole(BASE_USER_ROLE)
+                    .withObjectPostProcessor(new LmsFilterSecurityInterceptorObjectPostProcessor())
+                    .and()
+                    .headers()
+                    .contentSecurityPolicy("style-src 'self'; form-action 'self'; frame-ancestors 'self' https://*.instructure.com")
+                    .and()
+                    .referrerPolicy(referrer -> referrer
+                            .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.SAME_ORIGIN));
 
             //Setup the LTI handshake
             Lti13Configurer lti13Configurer = new Lti13Configurer()
@@ -77,8 +86,14 @@ public class SecurityConfig {
             http.requestMatchers().antMatchers("/**")
                   .and()
                   .authorizeRequests()
-                  .anyRequest().authenticated();
-
+                  .anyRequest().authenticated()
+                    .withObjectPostProcessor(new LmsFilterSecurityInterceptorObjectPostProcessor())
+                    .and()
+                    .headers()
+                    .contentSecurityPolicy("style-src 'self'; form-action 'self'; frame-ancestors 'self' https://*.instructure.com")
+                    .and()
+                    .referrerPolicy(referrer -> referrer
+                            .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.SAME_ORIGIN));
         }
 
         @Override
