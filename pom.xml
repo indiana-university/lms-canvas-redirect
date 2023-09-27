@@ -13,7 +13,7 @@
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
-    <version>0.99.3-SNAPSHOT</version>
+    <version>5.0.3-SNAPSHOT</version>
     <description>LTI tool which allows for a redirection to an external URL</description>
     <url>https://github.com/indiana-university/lms-canvas-redirect</url>
     <inceptionYear>2015</inceptionYear>
