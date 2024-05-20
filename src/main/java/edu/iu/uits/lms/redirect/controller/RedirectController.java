@@ -43,7 +43,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import uk.ac.ox.ctl.lti13.security.oauth2.client.lti.authentication.OidcAuthenticationToken;
 
 @Controller
-@RequestMapping("/app/redirect")
+@RequestMapping({"/app/launch", "/app/redirect"})
 public class RedirectController extends RedirectableLtiController {
 
    @Autowired
