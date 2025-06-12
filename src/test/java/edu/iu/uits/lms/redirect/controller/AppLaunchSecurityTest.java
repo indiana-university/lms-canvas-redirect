@@ -4,22 +4,22 @@ package edu.iu.uits.lms.redirect.controller;
  * #%L
  * lms-canvas-redirect
  * %%
- * Copyright (C) 2015 - 2022 Indiana University
+ * Copyright (C) 2015 - 2025 Indiana University
  * %%
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
- *
+ * 
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * 3. Neither the name of the Indiana University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software without
  *    specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -33,24 +33,30 @@ package edu.iu.uits.lms.redirect.controller;
  * #L%
  */
 
-import com.nimbusds.jose.shaded.json.JSONArray;
-import com.nimbusds.jose.shaded.json.JSONObject;
 import edu.iu.uits.lms.common.variablereplacement.MacroVariableMapper;
+import edu.iu.uits.lms.common.variablereplacement.VariableReplacementConfig;
+import edu.iu.uits.lms.common.variablereplacement.VariableReplacementService;
 import edu.iu.uits.lms.lti.LTIConstants;
 import edu.iu.uits.lms.lti.config.LtiClientTestConfig;
 import edu.iu.uits.lms.lti.config.TestUtils;
 import edu.iu.uits.lms.lti.controller.RedirectableLtiController;
+import edu.iu.uits.lms.lti.service.LmsDefaultGrantedAuthoritiesMapper;
+import edu.iu.uits.lms.redirect.config.SecurityConfig;
 import edu.iu.uits.lms.redirect.config.ToolConfig;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.ac.ox.ctl.lti13.lti.Claims;
 import uk.ac.ox.ctl.lti13.security.oauth2.client.lti.authentication.OidcAuthenticationToken;
@@ -66,15 +72,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = RedirectController.class, properties = {"oauth.tokenprovider.url=http://foo"})
-@Import({ToolConfig.class, LtiClientTestConfig.class})
+@ContextConfiguration(classes = {RedirectController.class, ToolConfig.class, SecurityConfig.class, VariableReplacementConfig.class})
 @ActiveProfiles("none")
 public class AppLaunchSecurityTest {
 
    @Autowired
    private MockMvc mvc;
 
-   @MockBean
+   @MockitoBean
    private MessageSource messageSource = null;
+
+   @MockitoBean
+   private LmsDefaultGrantedAuthoritiesMapper lmsDefaultGrantedAuthoritiesMapper;
+
+   @MockitoBean
+   private ClientRegistrationRepository clientRegistrationRepository;
+
+   @Autowired
+   private VariableReplacementService variableReplacementService;
 
    @Test
    public void appNoAuthnLaunch() throws Exception {
@@ -142,7 +157,7 @@ public class AppLaunchSecurityTest {
 
    @Test
    public void randomUrlWithAuth() throws Exception {
-      OidcAuthenticationToken token = TestUtils.buildToken("userId", "foo", TestUtils.defaultRole());
+      OidcAuthenticationToken token = TestUtils.buildToken("userId", "foo", LTIConstants.BASE_USER_AUTHORITY);
       SecurityContextHolder.getContext().setAuthentication(token);
 
       //This is a secured endpoint and should not allow access without authn

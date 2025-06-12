@@ -4,22 +4,22 @@ package edu.iu.uits.lms.redirect;
  * #%L
  * lms-canvas-redirect
  * %%
- * Copyright (C) 2015 - 2022 Indiana University
+ * Copyright (C) 2015 - 2025 Indiana University
  * %%
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
- *
+ * 
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * 3. Neither the name of the Indiana University nor the names of its contributors
  *    may be used to endorse or promote products derived from this software without
  *    specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -41,7 +41,6 @@ import edu.iu.uits.lms.common.variablereplacement.EnableVariableReplacementServi
 import edu.iu.uits.lms.lti.config.EnableGlobalErrorHandler;
 import edu.iu.uits.lms.lti.config.EnableLtiClient;
 import edu.iu.uits.lms.redirect.config.ToolConfig;
-import edu.iu.uits.lms.redis.config.EnableRedisConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -57,15 +56,16 @@ import java.util.Date;
 @EnableCookieFilter
 @EnableConfigurationProperties(GitRepositoryState.class)
 @EnableVariableReplacementService
-@EnableRedisConfiguration
 public class WebApplication {
 
     @Autowired
     private ToolConfig toolConfig;
 
+    private final static int STEP_CAPACITY = 2048;
+
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(WebApplication.class);
-        BufferingApplicationStartup startup = new BufferingApplicationStartup(2048);
+        BufferingApplicationStartup startup = new BufferingApplicationStartup(STEP_CAPACITY);
         startup.addFilter(startupStep -> startupStep.getName().matches("spring.boot.application.ready"));
         app.setApplicationStartup(startup);
         app.run(args);
