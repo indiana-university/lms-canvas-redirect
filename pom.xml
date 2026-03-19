@@ -9,7 +9,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.6</version>
+        <version>3.5.11</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
@@ -58,21 +58,21 @@
         <denodo-hibernate-dialect.version>9.0.20240513</denodo-hibernate-dialect.version>
         <git-commit-id-maven-plugin.version>9.0.2</git-commit-id-maven-plugin.version>
         <hibernate6-ddl-maven-plugin.version>1.0.2</hibernate6-ddl-maven-plugin.version>
-        <java.version>21</java.version>
-        <jdk.source>21</jdk.source>
-        <jdk.target>21</jdk.target>
-        <lms-embedded-services.version>6.2.5</lms-embedded-services.version>
-        <lms-team-spring-boot-it12>6.5.1_1</lms-team-spring-boot-it12>
-        <spring-cloud.version>2024.0.1</spring-cloud.version>
+        <java.version>25</java.version>
+        <jdk.source>25</jdk.source>
+        <jdk.target>25</jdk.target>
+        <lms-embedded-services.version>6.3.10</lms-embedded-services.version>
+        <lms-team-spring-boot-it12>6.5.2_2</lms-team-spring-boot-it12>
+        <spring-cloud.version>2025.0.1</spring-cloud.version>
 
         <!-- These 3 props can be overridden at compile time if they are being customized-->
         <variable-replacement-service.groupId>edu.iu.uits.lms</variable-replacement-service.groupId>
         <variable-replacement-service.artifactId>lms-iu-variable-replacement-service</variable-replacement-service.artifactId>
         <variable-replacement-service.version>${lms-embedded-services.version}</variable-replacement-service.version>
 
-        <plugins.compiler.version>3.14.0</plugins.compiler.version>
-        <plugins.license.version>2.5.0</plugins.license.version>
-        <plugins.release.version>3.1.1</plugins.release.version>
+        <plugins.compiler.version>3.15.0</plugins.compiler.version>
+        <plugins.license.version>2.7.1</plugins.license.version>
+        <plugins.release.version>3.3.1</plugins.release.version>
     </properties>
 
     <dependencyManagement>
@@ -220,6 +220,12 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
@@ -304,11 +310,6 @@
                     <artifactId>lms-team-spring-boot-it12</artifactId>
                     <version>${lms-team-spring-boot-it12}</version>
                 </dependency>
-                <!--                <dependency>-->
-                <!--                    <groupId>edu.iu.es.esi.audit</groupId>-->
-                <!--                    <artifactId>spring-boot-it12</artifactId>-->
-                <!--                    <version>${spring-boot-it12}</version>-->
-                <!--                </dependency>-->
             </dependencies>
             <repositories>
                 <repository>
