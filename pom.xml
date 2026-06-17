@@ -9,11 +9,11 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.11</version>
+        <version>4.0.7</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
-    <version>6.1.2-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
     <description>LTI tool which allows for a redirection to an external URL</description>
     <url>https://github.com/indiana-university/lms-canvas-redirect</url>
     <inceptionYear>2015</inceptionYear>
@@ -54,16 +54,16 @@
 
     <properties>
         <app.version>${project.version}</app.version>
-        <denodo-jdbc.version>9.1.0</denodo-jdbc.version>
-        <denodo-hibernate-dialect.version>9.0.20240513</denodo-hibernate-dialect.version>
-        <git-commit-id-maven-plugin.version>9.0.2</git-commit-id-maven-plugin.version>
-        <hibernate6-ddl-maven-plugin.version>1.0.2</hibernate6-ddl-maven-plugin.version>
+        <denodo-jdbc.version>9.4.1</denodo-jdbc.version>
+        <denodo-hibernate-dialect.version>9.0.20251031</denodo-hibernate-dialect.version>
+        <git-commit-id-maven-plugin.version>10.0.0</git-commit-id-maven-plugin.version>
+        <hibernate-jpa-schemagen.version>7.2.2</hibernate-jpa-schemagen.version>
         <java.version>25</java.version>
         <jdk.source>25</jdk.source>
         <jdk.target>25</jdk.target>
-        <lms-embedded-services.version>6.3.10</lms-embedded-services.version>
-        <lms-team-spring-boot-it12>6.5.2_2</lms-team-spring-boot-it12>
-        <spring-cloud.version>2025.0.1</spring-cloud.version>
+        <lms-embedded-services.version>7.0.3</lms-embedded-services.version>
+        <lms-team-spring-boot-it12>7.6.0_0</lms-team-spring-boot-it12>
+        <spring-cloud.version>2025.1.2</spring-cloud.version>
 
         <!-- These 3 props can be overridden at compile time if they are being customized-->
         <variable-replacement-service.groupId>edu.iu.uits.lms</variable-replacement-service.groupId>
@@ -111,7 +111,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -142,12 +142,17 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+            <artifactId>spring-boot-starter-security-oauth2-resource-server</artifactId>
         </dependency>
         <!-- need thymeleaf for the global error page -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-webmvc-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -192,26 +197,57 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>de.jpdigital</groupId>
-                <artifactId>hibernate65-ddl-maven-plugin</artifactId>
-                <version>${hibernate6-ddl-maven-plugin.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>copy-schemagen-jars</id>
+                        <phase>process-resources</phase>
                         <goals>
-                            <goal>gen-ddl</goal>
+                            <goal>copy</goal>
                         </goals>
-                        <phase>process-classes</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/schemagen-jars</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>edu.iu.uits.lms</groupId>
+                                    <artifactId>lms-canvas-lti-framework</artifactId>
+                                    <destFileName>lms-canvas-lti-framework.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <dialects>
-                        <param>h2</param>
-                        <param>postgresql</param>
-                    </dialects>
-                    <packages>
-                        <param>edu.iu.uits.lms.lti</param>
-                    </packages>
-                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.dellroad</groupId>
+                <artifactId>hibernate-jpa-schemagen-maven-plugin</artifactId>
+                <version>${hibernate-jpa-schemagen.version}</version>
+                <executions>
+<!--                    <execution>-->
+<!--                        <id>gen-ddl-h2</id>-->
+<!--                        <goals>-->
+<!--                            <goal>export-jpa-schema</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <jpaUnit>h2</jpaUnit>-->
+<!--                            <outputFile>${project.build.directory}/generated-resources/h2.sql</outputFile>-->
+<!--                            <verifyFile>NONE</verifyFile>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+                    <execution>
+                        <id>gen-ddl-postgresql</id>
+                        <goals>
+                            <goal>export-jpa-schema</goal>
+                        </goals>
+                        <configuration>
+                            <jpaUnit>postgresql</jpaUnit>
+                            <outputFile>${project.build.directory}/generated-resources/postgresql.sql</outputFile>
+                            <verifyFile>NONE</verifyFile>
+                            <removePersistenceXml>true</removePersistenceXml>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -1,23 +1,11 @@
 spring:
   application:
     name: redirect
-  session:
-    store-type: none
   config.import: optional:${app.fullFilePath}/${app.overridesFileName}, optional:${app.fullFilePath}/security.properties, optional:classpath:canvas.properties, optional:classpath:git.properties, classpath:lti-registrations.properties, optional:classpath:denodo.properties
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
-    properties:
-      hibernate:
-        jdbc:
-          lob:
-            non_contextual_creation: true
-        temp:
-          use_jdbc_metadata_defaults: false
-      jadira:
-        usertype:
-          autoRegisterUserTypes: true
   datasource:
     url: ${lms.db.url}
     username: ${lms.db.user}
@@ -61,8 +49,10 @@ springdoc:
 spring:
   config.activate.on-profile: redis-session
   session:
-    store-type: redis
-    redis.namespace: redirect-@app.version@:session
+    servlet:
+      store-type: redis
+    redis:
+      namespace: redirect-@app.version@:session
 management.health.redis.enabled: true
 
 ---

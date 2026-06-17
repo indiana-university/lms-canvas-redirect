@@ -37,7 +37,6 @@ import edu.iu.uits.lms.common.variablereplacement.MacroVariableMapper;
 import edu.iu.uits.lms.common.variablereplacement.VariableReplacementConfig;
 import edu.iu.uits.lms.common.variablereplacement.VariableReplacementService;
 import edu.iu.uits.lms.lti.LTIConstants;
-import edu.iu.uits.lms.lti.config.LtiClientTestConfig;
 import edu.iu.uits.lms.lti.config.TestUtils;
 import edu.iu.uits.lms.lti.controller.RedirectableLtiController;
 import edu.iu.uits.lms.lti.service.LmsDefaultGrantedAuthoritiesMapper;
@@ -47,12 +46,10 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -67,6 +64,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,8 +123,6 @@ public class AppLaunchSecurityTest {
       OidcAuthenticationToken token = TestUtils.buildToken("userId", LTIConstants.INSTRUCTOR_AUTHORITY,
             extraAttributes, customMap);
 
-      SecurityContextHolder.getContext().setAuthentication(token);
-
       String expectedRedirectUrl = MessageFormat.format(template, "John", "Smith",
             URLEncoder.encode(MacroVariableMapper.MACRO_SIS_CAMPUS, StandardCharsets.UTF_8),
             URLEncoder.encode(MacroVariableMapper.MACRO_SIS_TERM_ID, StandardCharsets.UTF_8),
@@ -139,6 +135,7 @@ public class AppLaunchSecurityTest {
 
       //This is a secured endpoint and should not allow access without authn
       mvc.perform(get("/app/redirect")
+                  .with(authentication(token))
                   .header(HttpHeaders.USER_AGENT, TestUtils.defaultUseragent())
                   .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is3xxRedirection())
@@ -147,7 +144,6 @@ public class AppLaunchSecurityTest {
 
    @Test
    public void randomUrlNoAuth() throws Exception {
-      SecurityContextHolder.getContext().setAuthentication(null);
       //This is a secured endpoint and should not allow access without authn
       mvc.perform(get("/asdf/foobar")
             .header(HttpHeaders.USER_AGENT, TestUtils.defaultUseragent())
@@ -158,10 +154,10 @@ public class AppLaunchSecurityTest {
    @Test
    public void randomUrlWithAuth() throws Exception {
       OidcAuthenticationToken token = TestUtils.buildToken("userId", "foo", LTIConstants.BASE_USER_AUTHORITY);
-      SecurityContextHolder.getContext().setAuthentication(token);
 
       //This is a secured endpoint and should not allow access without authn
       mvc.perform(get("/asdf/foobar")
+            .with(authentication(token))
             .header(HttpHeaders.USER_AGENT, TestUtils.defaultUseragent())
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
