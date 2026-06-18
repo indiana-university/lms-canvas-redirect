@@ -224,17 +224,6 @@
                 <artifactId>hibernate-jpa-schemagen-maven-plugin</artifactId>
                 <version>${hibernate-jpa-schemagen.version}</version>
                 <executions>
-<!--                    <execution>-->
-<!--                        <id>gen-ddl-h2</id>-->
-<!--                        <goals>-->
-<!--                            <goal>export-jpa-schema</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <jpaUnit>h2</jpaUnit>-->
-<!--                            <outputFile>${project.build.directory}/generated-resources/h2.sql</outputFile>-->
-<!--                            <verifyFile>NONE</verifyFile>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
                     <execution>
                         <id>gen-ddl-postgresql</id>
                         <goals>
