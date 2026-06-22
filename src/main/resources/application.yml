@@ -17,14 +17,11 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: ${oauth.tokenprovider.url}/.well-known/jwks.json
+  web.error.whitelabel.enabled: false
 redirect:
   version: @app.version@
   env: ${app.env}
 
-server:
-  error:
-    whitelabel:
-      enabled: false
   servlet:
     session:
       timeout: 30m
