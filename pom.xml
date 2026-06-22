@@ -309,6 +309,7 @@
                                 <phase>install</phase>
                                 <goals>
                                     <goal>build-image-no-fork</goal>
+                                    <goal>build-info</goal>
                                 </goals>
                             </execution>
                         </executions>
