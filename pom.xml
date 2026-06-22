@@ -293,6 +293,48 @@
 
     <profiles>
         <profile>
+            <!--
+                The following configurations need to be set in your Maven settings.xml file before invoking this profile:
+                    docker.publish.username The username to authenticate with the registry
+                    docker.publish.password The password to authenticate with the registry
+            -->
+            <id>build-image</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>build-image-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <docker>
+                                <publishRegistry>
+                                    <username>${docker.publish.username}</username>
+                                    <password>${docker.publish.password}</password>
+                                    <url>https://registry.docker.iu.edu</url>
+                                </publishRegistry>
+                            </docker>
+                            <publish>true</publish>
+                            <image>
+                                <env>
+                                    <HTTP_PROXY>${http.proxy}</HTTP_PROXY>
+                                    <HTTPS_PROXY>${https.proxy}</HTTPS_PROXY>
+                                    <NO_PROXY>${http.nonProxyHosts}</NO_PROXY>
+                                    <TZ>America/Indiana/Indianapolis</TZ>
+                                </env>
+                            </image>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>var-repl-ser</id>
             <dependencies>
                 <dependency>
