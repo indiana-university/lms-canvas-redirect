@@ -316,26 +316,26 @@
                                 <goals>
                                     <goal>build-image-no-fork</goal>
                                 </goals>
+                                <configuration>
+                                    <docker>
+                                        <publishRegistry>
+                                            <username>${docker.publish.username}</username>
+                                            <password>${docker.publish.password}</password>
+                                            <url>https://registry.docker.iu.edu</url>
+                                        </publishRegistry>
+                                    </docker>
+                                    <publish>true</publish>
+                                    <image>
+                                        <env>
+                                            <HTTP_PROXY>${http.proxy}</HTTP_PROXY>
+                                            <HTTPS_PROXY>${https.proxy}</HTTPS_PROXY>
+                                            <NO_PROXY>${http.nonProxyHosts}</NO_PROXY>
+                                            <TZ>America/Indiana/Indianapolis</TZ>
+                                        </env>
+                                    </image>
+                                </configuration>
                             </execution>
                         </executions>
-                        <configuration>
-                            <docker>
-                                <publishRegistry>
-                                    <username>${docker.publish.username}</username>
-                                    <password>${docker.publish.password}</password>
-                                    <url>https://registry.docker.iu.edu</url>
-                                </publishRegistry>
-                            </docker>
-                            <publish>true</publish>
-                            <image>
-                                <env>
-                                    <HTTP_PROXY>${http.proxy}</HTTP_PROXY>
-                                    <HTTPS_PROXY>${https.proxy}</HTTPS_PROXY>
-                                    <NO_PROXY>${http.nonProxyHosts}</NO_PROXY>
-                                    <TZ>America/Indiana/Indianapolis</TZ>
-                                </env>
-                            </image>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
